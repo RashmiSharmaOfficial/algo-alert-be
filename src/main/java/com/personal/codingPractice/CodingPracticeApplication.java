@@ -1,6 +1,6 @@
 package com.personal.codingPractice;
 
-import com.personal.codingPractice.mongodb.repository.ItemRepository;
+//import com.personal.codingPractice.mongodb.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,8 +12,8 @@ import java.util.List;
 @EnableMongoRepositories
 public class CodingPracticeApplication {
 
-	@Autowired
-	ItemRepository groceryItemRepo;
+//	@Autowired
+//	ItemRepository groceryItemRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CodingPracticeApplication.class, args);
