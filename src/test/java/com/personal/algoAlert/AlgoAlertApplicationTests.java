@@ -1,10 +1,10 @@
-package com.personal.codingPractice;
+package com.personal.algoAlert;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CodingPracticeApplicationTests {
+class AlgoAlertApplicationTests {
 
 	@Test
 	void contextLoads() {
