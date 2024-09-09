@@ -1,8 +1,10 @@
-package com.personal.codingPractice.mongodb.model;
+package com.personal.algoAlert.shared.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//this is not dto ->  this is data model, it represents the structure of data stored in
+//db, mapped to a database collection
 @Document(collection = "questionrecords")
 public class QuestionRecords {
     @Id
