@@ -36,4 +36,10 @@ public class QuestionController {
         QuestionRecords updatedQuestion = questionService.updateQuestion(id, updatedQuesRec);
         return updatedQuestion != null ? ResponseEntity.ok(updatedQuestion) : ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteQuestionRecord(@PathVariable String id){
+        boolean isDeleted = questionService.deleteQuestion(id);
+        return isDeleted ? ResponseEntity.ok("Deleted " + id + " successfully!") : ResponseEntity.notFound().build();
+    }
 }

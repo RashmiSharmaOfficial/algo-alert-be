@@ -7,7 +7,6 @@ import com.personal.algoAlert.system.repositories.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,10 +26,6 @@ public class QuestionService {
 
     // Business logic for creating a new question
     public QuestionRecords createQuestion(QuestionRecordReqDto questionReq) {
-        // Perform operations before saving
-        // Example: setting a default value if null
-
-
         if (questionReq.getQuesComment() == null) {
             questionReq.setQuesComment("No comment provided");
         }
@@ -63,13 +58,49 @@ public class QuestionService {
     // Business logic for updating a question
     public QuestionRecords updateQuestion(String id, QuestionRecords updatedQuestion) {
         return questionsRepository.findById(id).map(question -> {
-            // Perform necessary operations before updating
+//            String lastAttemptDate = DateTimeConverter.currentDateTime();
+            String nextAttemptDate = DateTimeConverter.addDaysToDateTime(updatedQuestion.getQuesLastAttemptDate(), updatedQuestion.getQuesRepeatFreq());
+            question.setId(updatedQuestion.getId());
+            question.setTopic(updatedQuestion.getTopic());
             question.setQuesName(updatedQuestion.getQuesName());
+            question.setQuesDifficulty(updatedQuestion.getQuesDifficulty());
             question.setQuesSolved(updatedQuestion.isQuesSolved());
-            // ... Other fields to update
+            question.setQuesLink(updatedQuestion.getQuesLink());
+            question.setQuesComment(updatedQuestion.getQuesComment());
+            question.setQuesSolutionLink(updatedQuestion.getQuesSolutionLink());
+            question.setQuesRepeatFreq(updatedQuestion.getQuesRepeatFreq());
+            question.setQuesFirstAttemptDate(updatedQuestion.getQuesFirstAttemptDate());
+            question.setQuesLastAttemptDate(updatedQuestion.getQuesLastAttemptDate());
+            question.setQuesNextAttemptDate(nextAttemptDate);
+
+            // Convert DTO to domain object
+//            QuestionRecords questionReq = new QuestionRecords(
+//                    updatedQuestion.getId(),
+//                    updatedQuestion.getTopic(),
+//                    updatedQuestion.getQuesName(),
+//                    updatedQuestion.getQuesDifficulty(),
+//                    updatedQuestion.getQuesPlatform(),
+//                    updatedQuestion.isQuesSolved(),
+//                    updatedQuestion.getQuesLink(),
+//                    updatedQuestion.getQuesComment(),
+//                    updatedQuestion.getQuesSolutionLink(),
+//                    updatedQuestion.getQuesRepeatFreq(),
+//                    updatedQuestion.getQuesFirstAttemptDate(),
+//                    updatedQuestion.getQuesLastAttemptDate(),
+//                    nextAttemptDate
+//            );
+
             return questionsRepository.save(question);
         }).orElse(null);
     }
+
+    public boolean deleteQuestion(String id){
+        return Boolean.TRUE.equals(questionsRepository.findById(id).map(question -> {
+            questionsRepository.deleteById(question.getId());
+            return true;
+        }).orElse(null));
+    }
+
 
     private String calculateLastAttemptDate(QuestionRecordReqDto dto) {
         // Your logic to calculate last attempt date
