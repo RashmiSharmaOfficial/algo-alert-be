@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuestionRecordReqDto {
+    private String firebase_uid;
     private String[] topic;
     private String quesName;
     private String quesDifficulty;
