@@ -5,18 +5,55 @@ import com.personal.algoAlert.shared.helpers.DateTimeConverter;
 import com.personal.algoAlert.shared.model.QuestionRecords;
 import com.personal.algoAlert.system.repositories.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Criteria;
 
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuestionService {
     @Autowired
     private QuestionsRepository questionsRepository;
 
+    private final MongoTemplate mongoTemplate;
+
+    public QuestionService(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
     public List<QuestionRecords> getAllQuestions() {
-        // You can perform some operations here if necessary
         return questionsRepository.findAll();
+    }
+
+    public Map<String, Object> getAllQuestions(String firebaseUid, String searchQuery, int page, int size) {
+        Query countQuery = new Query();
+        countQuery.addCriteria(Criteria.where("firebase_uid").is(firebaseUid));
+        long totalCount = mongoTemplate.count(countQuery, QuestionRecords.class);
+
+        //query to get filtered data
+        Query query = new Query();
+        query.addCriteria(Criteria.where("firebase_uid").is(firebaseUid));
+       if(searchQuery != null && !searchQuery.isEmpty()){
+           query.addCriteria(Criteria.where("quesName").regex(searchQuery, "i"));
+       }
+
+        query.skip(page * size).limit(size);
+       List<QuestionRecords> questions = mongoTemplate.find(query, QuestionRecords.class);
+
+       //prepare response
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("response_data", questions);
+        responseData.put("totalCount", totalCount);
+
+//        response.put("response", responseData);
+        return responseData;
+        //        return questionsRepository.findAll();
     }
 
     // Business logic for retrieving a question by ID
@@ -38,6 +75,7 @@ public class QuestionService {
         // Convert DTO to domain object
         QuestionRecords question = new QuestionRecords(
                 null,
+                questionReq.getFirebase_uid(),
                 questionReq.getTopic(),
                 questionReq.getQuesName(),
                 questionReq.getQuesDifficulty(),

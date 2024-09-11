@@ -10,6 +10,7 @@ public class QuestionRecords {
     @Id
     private String id;
 
+    private String firebase_uid;
     private String[] topic;
     private String quesName;
     private String quesDifficulty;
@@ -29,6 +30,14 @@ public class QuestionRecords {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFirebase_uid() {
+        return firebase_uid;
+    }
+
+    public void setFirebase_uid(String firebase_uid) {
+        this.firebase_uid = firebase_uid;
     }
 
     public String[] getTopic() {
@@ -127,8 +136,9 @@ public class QuestionRecords {
         this.quesNextAttemptDate = quesNextAttemptDate;
     }
 
-    public QuestionRecords(String id, String[] topic, String quesName, String quesDifficulty, String quesPlatform, boolean quesSolved, String quesLink, String quesComment, String quesSolutionLink, int quesRepeatFreq, String quesFirstAttemptDate, String quesLastAttemptDate, String quesNextAttemptDate) {
+    public QuestionRecords(String id, String firebase_uid, String[] topic, String quesName, String quesDifficulty, String quesPlatform, boolean quesSolved, String quesLink, String quesComment, String quesSolutionLink, int quesRepeatFreq, String quesFirstAttemptDate, String quesLastAttemptDate, String quesNextAttemptDate) {
         this.id = id;
+        this.firebase_uid = firebase_uid;
         this.topic = topic;
         this.quesName = quesName;
         this.quesDifficulty = quesDifficulty;

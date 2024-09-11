@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/question")
@@ -15,9 +16,21 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<QuestionRecords> getAllQuestionRecords(){
         return questionService.getAllQuestions();
+    }
+
+    @GetMapping("/filtered")
+    public Map<String, Object> getAllQuestionRecords(@RequestParam String firebase_uid,
+                                                     @RequestParam(required = false) String searchQuery,
+                                                     @RequestParam(required = false) Integer page,
+                                                     @RequestParam(required = false) Integer size){
+        // Default values for pagination if not provided
+        int currentPage = (page != null) ? page : 0;
+        int pageSize = (size != null) ? size : 10;
+
+        return questionService.getAllQuestions(firebase_uid, searchQuery, currentPage, pageSize);
     }
 
     @GetMapping("/{id}")
