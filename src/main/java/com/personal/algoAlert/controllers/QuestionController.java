@@ -39,6 +39,18 @@ public class QuestionController {
         return question != null ? ResponseEntity.ok(question) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/attempt-today")
+    public Map<String, Object> questionsToAttemptToday(@RequestParam String firebase_uid,
+                                                     @RequestParam(required = false) String searchQuery,
+                                                     @RequestParam(required = false) Integer page,
+                                                     @RequestParam(required = false) Integer size){
+        // Default values for pagination if not provided
+        int currentPage = (page != null) ? page : 0;
+        int pageSize = (size != null) ? size : 10;
+
+        return questionService.questionsToAttemptToday(firebase_uid, searchQuery, currentPage, pageSize);
+    }
+
     @PostMapping
     public QuestionRecords createUser(@RequestBody QuestionRecordReqDto quesRec) {
         return questionService.createQuestion(quesRec);

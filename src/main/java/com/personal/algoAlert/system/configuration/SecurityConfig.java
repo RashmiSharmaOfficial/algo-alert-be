@@ -18,12 +18,12 @@ public class SecurityConfig {
     // Define the SecurityFilterChain bean to configure security
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, FirebaseTokenFilter firebaseTokenFilter) throws Exception {
+//       "/sendEmailWithTemplate"
         http
-//                .cors().and()
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable()) // Disable CSRF protection for stateless APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/public/**", "/sendEmailWithTemplate").permitAll()  // Allow public routes
+                        .requestMatchers("/api/public/**").permitAll()  // Allow public routes
                         .anyRequest().authenticated()                    // Secure all other routes
                 )
                 .addFilterBefore(firebaseTokenFilter, UsernamePasswordAuthenticationFilter.class) // Add FirebaseTokenFilter
